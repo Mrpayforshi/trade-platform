@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServerSupabase, createServiceRoleClient } from "@/lib/supabase/server";
+import { notifyUser } from "@/lib/notifications/dispatch";
 
 // PATCH /api/admin/transactions/[id]/state
 // Ops-only. Manually advances the transaction state machine.
@@ -100,6 +101,20 @@ export async function PATCH(
       { status: isIllegalTransition ? 400 : 500 }
     );
   }
+
+  // Notify the buyer. Deliberately not throwing/blocking on failure — a
+  // notification issue should never roll back or fail a state change that
+  // already succeeded and was already audit-logged by the DB trigger.
+  // NOTE: the supplier side of this transaction is NOT notified here —
+  // notifications.user_id has no FK path to suppliers under the current
+  // schema (see lib/notifications/dispatch.ts). This is a known gap, not
+  // an oversight — flagging again here since it's easy to miss at the
+  // call site.
+  await notifyUser(service, {
+    userId: data.buyer_id,
+    eventType: "transaction_state_changed",
+    content: `Your transaction has moved to: ${newState}`,
+  });
 
   return NextResponse.json({ data });
 }
