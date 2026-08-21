@@ -1,0 +1,41 @@
+-- ============================================================================
+-- Migration 0006 — Auth onboarding trigger
+-- Closes the gap: every route so far assumes a `users` or `suppliers` row
+-- already exists post-signup. Nothing currently creates it. RFQ submission
+-- 404s with "Buyer profile not found" for any real new signup right now.
+--
+-- Two paths, distinguished by raw_user_meta_data on the auth.users row:
+--   1. Buyer self-signup (no metadata, or role != 'supplier'):
+--      auto-create a public.users row.
+--   2. Supplier invite-accept (role='supplier', supplier_id=<uuid> set by
+--      ops when calling admin.auth.admin.inviteUserByEmail — see the
+--      companion /api/admin/suppliers/[id]/invite route):
+--      link auth_user_id onto the EXISTING suppliers row instead of
+--      creating a new users row. Suppliers never self-signup — the
+--      suppliers row already exists in 'pending' state from admission.
+-- Applied to: qaqbshgrlsmqrqzjfelc (Cross Boarder Trade)
+-- ============================================================================
+
+create or replace function handle_new_auth_user()
+returns trigger as $$
+declare
+  meta_role text := new.raw_user_meta_data ->> 'role';
+  meta_supplier_id text := new.raw_user_meta_data ->> 'supplier_id';
+begin
+  if meta_role = 'supplier' and meta_supplier_id is not null then
+    update public.suppliers
+    set auth_user_id = new.id, updated_at = now()
+    where id = meta_supplier_id::uuid
+      and auth_user_id is null; -- never overwrite an already-linked supplier
+  else
+    insert into public.users (auth_user_id, email)
+    values (new.id, new.email)
+    on conflict (auth_user_id) do nothing;
+  end if;
+  return new;
+end;
+$$ language plpgsql security definer set search_path = public;
+
+create trigger trg_handle_new_auth_user
+  after insert on auth.users
+  for each row execute function handle_new_auth_user();
