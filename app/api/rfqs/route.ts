@@ -7,21 +7,17 @@ import { createServerSupabase } from "@/lib/supabase/server";
 // rejected here rather than silently accepted).
 export async function POST(request: Request) {
   const supabase = await createServerSupabase();
-
   const {
     data: { user: authUser },
   } = await supabase.auth.getUser();
-
   if (!authUser) {
     return NextResponse.json(
       { error: "Authentication required", code: "unauthenticated" },
       { status: 401 }
     );
   }
-
   const body = await request.json();
   const { category_id, quantity, specification } = body;
-
   if (!category_id || !specification) {
     return NextResponse.json(
       {
@@ -31,21 +27,18 @@ export async function POST(request: Request) {
       { status: 422 }
     );
   }
-
   // Confirm the buyer has a `users` row (created at signup/onboarding)
   const { data: buyer } = await supabase
     .from("users")
     .select("id")
     .eq("auth_user_id", authUser.id)
     .single();
-
   if (!buyer) {
     return NextResponse.json(
       { error: "Buyer profile not found", code: "buyer_profile_missing" },
       { status: 404 }
     );
   }
-
   // Category must exist and be enabled — do not trust the client's claim
   // that a category is orderable
   const { data: category } = await supabase
@@ -53,7 +46,6 @@ export async function POST(request: Request) {
     .select("id, is_enabled, is_high_risk")
     .eq("id", category_id)
     .single();
-
   if (!category || !category.is_enabled) {
     return NextResponse.json(
       {
@@ -63,7 +55,6 @@ export async function POST(request: Request) {
       { status: 403 }
     );
   }
-
   const { data, error } = await supabase
     .from("rfqs")
     .insert({
@@ -74,14 +65,12 @@ export async function POST(request: Request) {
     })
     .select()
     .single();
-
   if (error) {
     return NextResponse.json(
       { error: "Could not submit RFQ", code: "rfq_insert_failed" },
       { status: 500 }
     );
   }
-
   return NextResponse.json({ data }, { status: 201 });
 }
 
@@ -94,19 +83,16 @@ export async function GET(request: Request) {
   const limit = Math.min(50, parseInt(searchParams.get("limit") ?? "20", 10));
   const from = (page - 1) * limit;
   const to = from + limit - 1;
-
   const { data, error, count } = await supabase
     .from("rfqs")
     .select("*", { count: "exact" })
     .order("created_at", { ascending: false })
     .range(from, to);
-
   if (error) {
     return NextResponse.json(
       { error: "Could not load RFQs", code: "rfqs_fetch_failed" },
       { status: 500 }
     );
   }
-
   return NextResponse.json({ data, page, limit, total: count });
 }
