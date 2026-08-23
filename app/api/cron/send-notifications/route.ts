@@ -1,10 +1,5 @@
 import { NextResponse } from "next/server";
-// ASSUMPTION: I'm guessing this import path/export name based on the
-// naming convention of createServerSupabase in lib/supabase/server.ts.
-// GitHub content-fetch was down when this was written so I couldn't
-// confirm your actual service-role client's location — if it lives
-// somewhere else (e.g. lib/supabase/admin.ts), just fix this one import.
-import { createServiceSupabase } from "@/lib/supabase/service";
+import { createServiceRoleClient } from "@/lib/supabase/server";
 import { processPendingNotifications } from "@/lib/notifications/send";
 
 // GET /api/cron/send-notifications
@@ -18,7 +13,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const serviceClient = createServiceSupabase();
+  const serviceClient = createServiceRoleClient();
   const result = await processPendingNotifications(serviceClient);
 
   return NextResponse.json(result);
