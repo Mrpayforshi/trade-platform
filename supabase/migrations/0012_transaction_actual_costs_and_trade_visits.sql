@@ -17,7 +17,7 @@ create table transaction_actual_costs (
 
 alter table transaction_actual_costs enable row level security;
 
--- Ops/admin only — this is internal financial data, not something buyers
+-- Ops/admin only -- this is internal financial data, not something buyers
 -- or suppliers should see line-items of.
 create policy "admin_full_access_actual_costs"
   on transaction_actual_costs
