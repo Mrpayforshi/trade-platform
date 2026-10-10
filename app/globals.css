@@ -1,26 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --paper: #f7f5f0;
+  --card: #fdfcfa;
+  --ink: #14213d;
+  --mute: #6f6a60;
+  --line: #ddd8cc;
+  --brand: #147a43;
+  --amber: #f2a33a;
+  --brick: #a13d2c;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #0e1626;
+    --card: #152036;
+    --ink: #edeae2;
+    --mute: #9aa3b5;
+    --line: #2a3752;
+    --brand: #2fbf72;
   }
 }
 
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-amber: var(--amber);
+  --color-brick: var(--brick);
+  --font-sans: var(--font-hanken), system-ui, sans-serif;
+  --font-serif: var(--font-zilla), Georgia, serif;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .arc {
+    stroke-dasharray: 4 8;
+    animation: flow 2s linear infinite;
+  }
+  @keyframes flow {
+    to { stroke-dashoffset: -24; }
+  }
 }
