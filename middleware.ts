@@ -52,8 +52,9 @@ export const config = {
      * Match all request paths except:
      * - _next/static, _next/image (Next internals)
      * - favicon.ico
-     * - public assets (icons, manifest, sw.js)
+     * - public assets (icons, brand, manifest, sw.js)
+     * - image files (svg, png, jpg, jpeg, webp, ico)
      */
-    "/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js).*)",
+    "/((?!_next/static|_next/image|favicon.ico|icons|brand|manifest.json|sw.js|.*\\.(?:svg|png|jpg|jpeg|webp|ico)$).*)",
   ],
 };
