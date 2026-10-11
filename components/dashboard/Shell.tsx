@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/brand/Logo";
+import { DisclosureMenu } from "@/components/ui/DisclosureMenu";
 import { SidebarNav } from "./SidebarNav";
 
 export type ShellProps = {
@@ -45,18 +46,19 @@ export function Shell({ displayName, email, readiness, children }: ShellProps) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b border-line bg-card/90 px-4 backdrop-blur md:px-8">
-          <details className="relative md:hidden">
-            <summary className="cursor-pointer list-none rounded-md border border-ink px-3 py-1.5 text-sm font-semibold">Menu</summary>
-            <div className="absolute left-0 top-11 w-72 rounded-xl border border-line bg-paper p-3 shadow-lg">
-              <SidebarNav />
-            </div>
-          </details>
+          <DisclosureMenu
+            className="relative md:hidden"
+            summaryClassName="flex min-h-10 cursor-pointer list-none items-center rounded-md border border-ink px-3 text-sm font-semibold"
+            panelClassName="absolute left-0 top-12 max-h-[calc(100dvh-5rem)] w-[min(18rem,calc(100vw-2rem))] overflow-y-auto rounded-xl border border-line bg-paper p-3 shadow-lg"
+          >
+            <SidebarNav />
+          </DisclosureMenu>
           <p className="min-w-0 truncate font-semibold">{displayName}</p>
           <span className="hidden truncate text-sm text-mute sm:inline">{email}</span>
           <form action="/auth/signout" method="post" className="ml-auto">
             <button
               type="submit"
-              className="rounded-md border border-line px-3 py-1.5 text-sm font-semibold hover:bg-line/60"
+              className="min-h-10 rounded-md border border-line px-3 text-sm font-semibold hover:bg-line/60"
             >
               Log out
             </button>
