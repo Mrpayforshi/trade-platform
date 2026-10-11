@@ -1,7 +1,7 @@
 // Service worker: network-first pages (with offline fallback) + push receipt.
 // Bump CACHE_NAME whenever the caching behaviour changes.
 
-const CACHE_NAME = "nexum-shell-v2";
+const CACHE_NAME = "nexum-shell-v3";
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -26,6 +26,9 @@ self.addEventListener("fetch", (event) => {
 
   if (request.method !== "GET" || url.pathname.startsWith("/api/")) return;
   if (request.mode !== "navigate") return;
+  // Signed-in and auth pages are never cached: a cached copy could show one
+  // person's dashboard to the next person on a shared device.
+  if (/^\/(dashboard|login|signup|auth)(\/|$)/.test(url.pathname)) return;
 
   event.respondWith(
     fetch(request)
