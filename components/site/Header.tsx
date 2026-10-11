@@ -29,11 +29,14 @@ export function Header() {
             ),
           )}
         </nav>
-        <Link href="/how-it-works" className={`${btnPrimary} hidden md:inline-block`}>Get started</Link>
+        <Link href="/login" className={`${link} hidden md:block`}>Log in</Link>
+        <Link href="/signup" className={`${btnPrimary} hidden md:inline-block`}>Get started</Link>
         <details className="ml-auto md:hidden">
           <summary className="cursor-pointer list-none rounded-md border border-ink px-3 py-2 text-sm font-semibold">Menu</summary>
           <div className="absolute inset-x-0 top-16 flex flex-col border-b border-line bg-paper p-4">
             {nav.flatMap((g) => g.items).map((i) => <Link key={i.href} href={i.href} className={link}>{i.label}</Link>)}
+            <Link href="/login" className={link}>Log in</Link>
+            <Link href="/signup" className={`${link} font-semibold`}>Get started</Link>
           </div>
         </details>
       </div>
