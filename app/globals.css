@@ -41,6 +41,14 @@ body {
   font-family: var(--font-sans);
 }
 
+/* iOS Safari zooms the page when a focused field is under 16px. This sits
+   outside Tailwind's layers on purpose so it beats text-sm / text-[15px]. */
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
 h1, h2, h3 {
   font-family: var(--font-serif);
   font-weight: 600;
