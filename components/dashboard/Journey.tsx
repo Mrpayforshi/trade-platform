@@ -10,14 +10,14 @@ const circle: Record<StepStatus, string> = {
 
 const statusText: Record<StepStatus, string> = { done: "Done", now: "In progress", todo: "Not started" };
 
-/** Horizontal order journey. Scrolls sideways on narrow screens. */
+/** Order journey: a vertical list on phones, a horizontal track from md up. */
 export function Stepper({ steps }: { steps: Step[] }) {
   return (
-    <div className="overflow-x-auto">
-      <ol className="flex min-w-190">
+    <div className="md:overflow-x-auto">
+      <ol className="flex flex-col md:min-w-190 md:flex-row">
         {steps.map((s, i) => (
-          <li key={s.label} aria-current={s.status === "now" ? "step" : undefined} className="flex min-w-24 flex-1 flex-col gap-2.5">
-            <div className="flex items-center">
+          <li key={s.label} aria-current={s.status === "now" ? "step" : undefined} className="flex gap-3 md:min-w-24 md:flex-1 md:flex-col md:gap-2.5">
+            <div className="flex flex-col items-center md:flex-row">
               <span className={`flex size-7 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold ${circle[s.status]}`}>
                 {s.status === "done" ? (
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -30,10 +30,10 @@ export function Stepper({ steps }: { steps: Step[] }) {
                 )}
               </span>
               {i < steps.length - 1 && (
-                <span className={`mx-1.5 h-0.5 flex-1 ${s.status === "done" ? "bg-brand" : "bg-line"}`} />
+                <span className={`my-1 min-h-4 w-0.5 flex-1 md:mx-1.5 md:my-0 md:h-0.5 md:min-h-0 md:w-auto ${s.status === "done" ? "bg-brand" : "bg-line"}`} />
               )}
             </div>
-            <div className="pr-2">
+            <div className="pb-4 pt-0.5 md:pb-0 md:pr-2 md:pt-0">
               <p className="text-[13px] font-semibold">
                 {s.label}
                 <span className="sr-only"> — {statusText[s.status]}</span>
@@ -57,11 +57,11 @@ export function TradeLane({ nodes }: { nodes: LaneNode[] }) {
     todo: "bg-line/70 text-mute",
   };
   return (
-    <div className="overflow-x-auto rounded-xl border border-line bg-card [background-image:radial-gradient(var(--line)_1px,transparent_1px)] [background-size:16px_16px]">
-      <ol className="flex min-w-190 items-center p-5">
+    <div className="rounded-xl border border-line bg-card [background-image:radial-gradient(var(--line)_1px,transparent_1px)] [background-size:16px_16px] md:overflow-x-auto">
+      <ol className="flex flex-col p-4 md:min-w-190 md:flex-row md:items-center md:p-5">
         {nodes.map((n, i) => (
-          <li key={n.title} className="flex flex-1 items-center">
-            <div className="w-48 shrink-0 rounded-xl border border-line bg-card p-3.5">
+          <li key={n.title} className="flex flex-col md:flex-1 md:flex-row md:items-center">
+            <div className="w-full shrink-0 rounded-xl border border-line bg-card p-3.5 md:w-48">
               <div className="flex items-center gap-2.5">
                 <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${ring[n.status]}`}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -78,7 +78,7 @@ export function TradeLane({ nodes }: { nodes: LaneNode[] }) {
                 <span className="sr-only"> — {statusText[n.status]}</span>
               </p>
             </div>
-            {i < nodes.length - 1 && <span aria-hidden="true" className="mx-1 min-w-5 flex-1 border-t-2 border-dashed border-mute/60" />}
+            {i < nodes.length - 1 && <span aria-hidden="true" className="mx-auto h-5 border-l-2 border-dashed border-mute/60 md:mx-1 md:h-auto md:min-w-5 md:flex-1 md:border-l-0 md:border-t-2" />}
           </li>
         ))}
       </ol>
