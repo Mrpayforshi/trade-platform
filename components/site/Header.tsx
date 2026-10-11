@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { DisclosureMenu } from "@/components/ui/DisclosureMenu";
 import { nav } from "@/lib/site-content";
 import { btnPrimary } from "./ui";
 
@@ -30,15 +31,17 @@ export function Header() {
           )}
         </nav>
         <Link href="/login" className={`${link} hidden md:block`}>Log in</Link>
-        <Link href="/signup" className={`${btnPrimary} hidden md:inline-block`}>Get started</Link>
-        <details className="ml-auto md:hidden">
-          <summary className="cursor-pointer list-none rounded-md border border-ink px-3 py-2 text-sm font-semibold">Menu</summary>
-          <div className="absolute inset-x-0 top-16 flex flex-col border-b border-line bg-paper p-4">
-            {nav.flatMap((g) => g.items).map((i) => <Link key={i.href} href={i.href} className={link}>{i.label}</Link>)}
-            <Link href="/login" className={link}>Log in</Link>
-            <Link href="/signup" className={`${link} font-semibold`}>Get started</Link>
-          </div>
-        </details>
+        {/* Wrapper hides it: btnPrimary sets display itself, so `hidden` on the link loses to it. */}
+        <div className="hidden md:block"><Link href="/signup" className={btnPrimary}>Get started</Link></div>
+        <DisclosureMenu
+          className="ml-auto md:hidden"
+          summaryClassName="flex min-h-11 cursor-pointer list-none items-center rounded-md border border-ink px-4 text-sm font-semibold"
+          panelClassName="absolute inset-x-0 top-16 flex max-h-[calc(100dvh-4rem)] flex-col overflow-y-auto border-b border-line bg-paper p-4"
+        >
+          {nav.flatMap((g) => g.items).map((i) => <Link key={i.href} href={i.href} className={`${link} py-3`}>{i.label}</Link>)}
+          <Link href="/login" className={`${link} py-3`}>Log in</Link>
+          <Link href="/signup" className={`${btnPrimary} mt-2 text-center`}>Get started</Link>
+        </DisclosureMenu>
       </div>
     </header>
   );
