@@ -27,8 +27,8 @@ const H2 = ({ a, b }: { a: string; b: string }) => (
 export default function Home() {
   return (
     <>
-      <div className="grid items-end gap-12 pb-12 pt-18 md:grid-cols-[1.15fr_1fr]">
-        <h1 className="text-[clamp(40px,6vw,68px)] tracking-tight">Buy from China.<br /><span className="text-mute">Receive in Zimbabwe.</span></h1>
+      <div className="grid items-end gap-8 pb-10 pt-10 md:gap-12 md:pb-12 md:pt-18 md:grid-cols-[1.15fr_1fr]">
+        <h1 className="text-[clamp(36px,6vw,68px)] tracking-tight">Buy from China.<br /><span className="text-mute">Receive in Zimbabwe.</span></h1>
         <div>
           <p className="max-w-[46ch] text-lg text-mute">One managed transaction from supplier check to your doorstep: landed cost, permits, payment, freight, customs and delivery.</p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -40,21 +40,28 @@ export default function Home() {
       <Corridor />
       <div className="mb-6"><Passport /></div>
 
-      <section className="border-t border-line py-18">
+      <section className="border-t border-line py-12 md:py-18">
         <H2 a="Importing is fragmented." b="Nexum makes it one transaction." />
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-140 border-collapse text-[15px]">
-            <thead><tr className="text-left text-sm text-mute"><th className="p-3">Problem</th><th className="p-3">Today</th><th className="p-3">With Nexum</th></tr></thead>
-            <tbody>
-              {problems.map(([a, b, c]) => (
-                <tr key={a} className="border-t border-line align-top"><td className="w-[28%] p-3 font-semibold">{a}</td><td className="p-3 text-mute">{b}</td><td className="p-3">{c}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <table className="hidden w-full border-collapse text-[15px] md:table">
+          <thead><tr className="text-left text-sm text-mute"><th className="p-3">Problem</th><th className="p-3">Today</th><th className="p-3">With Nexum</th></tr></thead>
+          <tbody>
+            {problems.map(([a, b, c]) => (
+              <tr key={a} className="border-t border-line align-top"><td className="w-[28%] p-3 font-semibold">{a}</td><td className="p-3 text-mute">{b}</td><td className="p-3">{c}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <ul className="mt-6 grid gap-3 md:hidden">
+          {problems.map(([a, b, c]) => (
+            <li key={a} className="rounded-lg border border-line bg-card p-4">
+              <h3 className="mb-3 text-lg">{a}</h3>
+              <p className="text-sm text-mute"><span className="mb-0.5 block text-xs font-semibold uppercase tracking-wide">Today</span>{b}</p>
+              <p className="mt-3 text-[15px]"><span className="mb-0.5 block text-xs font-semibold uppercase tracking-wide text-brand">With Nexum</span>{c}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <section className="border-t border-line py-18">
+      <section className="border-t border-line py-12 md:py-18">
         <H2 a="Everything between supplier" b="and doorstep, in one place." />
         <div className="mt-7 grid gap-4 md:grid-cols-4">
           {features.map((f) => (
@@ -66,7 +73,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-t border-line py-18">
+      <section className="border-t border-line py-12 md:py-18">
         <H2 a="Two ways to buy." b="Same infrastructure." />
         <div className="mt-7 grid gap-4 md:grid-cols-2">
           {[
@@ -81,8 +88,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="pb-18">
-        <div className="rounded-xl bg-[#14213d] p-10 text-[#f7f5f0] [background-image:radial-gradient(circle_at_85%_15%,rgba(20,122,67,.75),transparent_55%)] md:p-14">
+      <section className="pb-12 md:pb-18">
+        <div className="rounded-xl bg-[#14213d] p-7 sm:p-10 text-[#f7f5f0] [background-image:radial-gradient(circle_at_85%_15%,rgba(20,122,67,.75),transparent_55%)] md:p-14">
           <h2 className="text-[clamp(28px,4vw,40px)]">One transaction.<br /><span className="text-[#9aa3b5]">One record. One team to call.</span></h2>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/how-it-works" className="inline-block rounded-md bg-amber px-4.5 py-2.5 font-semibold text-[#14213d]">See how it works</Link>
