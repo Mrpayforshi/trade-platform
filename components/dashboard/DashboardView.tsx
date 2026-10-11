@@ -169,7 +169,7 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
           {kpis.map((k) => (
             <Card key={k.label} className="flex min-w-0 flex-col gap-1 p-4">
               <p className="text-[13px] font-medium text-mute">{k.label}</p>
-              <p className="font-serif text-3xl font-semibold leading-none">{k.value}</p>
+              <p className="font-serif text-2xl font-semibold leading-none sm:text-3xl">{k.value}</p>
               <p className="text-[13px] text-mute">{k.sub}</p>
             </Card>
           ))}
@@ -178,20 +178,20 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
 
       {/* Active transaction */}
       <Card>
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-6 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-4 sm:px-6">
           <h2 className="text-xl">Active transaction</h2>
           {featured && <Pill tone={stateTone(featured.state)}>{stateLabel[featured.state]}</Pill>}
         </div>
 
         {!featured ? (
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             <EmptyNote>
               No active orders yet. Pick a product in the catalogue and request a landed quote to start one.
             </EmptyNote>
           </div>
         ) : (
           <>
-            <dl className="grid gap-x-8 gap-y-5 p-6 sm:grid-cols-2 lg:grid-cols-3">
+            <dl className="grid gap-x-8 gap-y-5 p-4 sm:p-6 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 ["Transaction", shortRef(featured.id)],
                 ["Category", featured.categories?.name ?? "Not set"],
@@ -207,7 +207,7 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
               ))}
             </dl>
 
-            <div className="border-t border-line px-6 py-5">
+            <div className="border-t border-line px-4 py-5 sm:px-6">
               <Stepper
                 steps={stepStatuses(featured.state, featured.previous_state).map((status, i) => ({
                   label: journey[i].label,
@@ -217,7 +217,7 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
               />
             </div>
 
-            <div className="grid gap-8 border-t border-line p-6 lg:grid-cols-2">
+            <div className="grid gap-8 border-t border-line p-4 sm:p-6 lg:grid-cols-2">
               <div>
                 <h3 className="text-lg">Release conditions</h3>
                 <p className="mt-1 text-[14px] text-mute">
