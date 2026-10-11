@@ -65,7 +65,7 @@ export function PageHeading({
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div className="min-w-0">
         <Eyebrow>{eyebrow}</Eyebrow>
-        <h1 className="mt-1.5 text-4xl">{title}</h1>
+        <h1 className="mt-1.5 break-words text-3xl sm:text-4xl">{title}</h1>
         {lede && <p className="mt-2 max-w-2xl text-mute">{lede}</p>}
       </div>
       {action}
