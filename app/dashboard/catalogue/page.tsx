@@ -24,7 +24,7 @@ export default async function CataloguePage(props: PageProps<"/dashboard/catalog
   for (const p of products) if (p.categories) counts.set(p.categories.slug, (counts.get(p.categories.slug) ?? 0) + 1);
 
   const chip = (active: boolean) =>
-    `rounded-full border px-3.5 py-1.5 text-sm font-semibold ${active ? "border-ink bg-ink text-paper" : "border-line bg-card hover:border-ink"}`;
+    `shrink-0 whitespace-nowrap rounded-full border px-3.5 py-2 text-sm font-semibold ${active ? "border-ink bg-ink text-paper" : "border-line bg-card hover:border-ink"}`;
   const hrefFor = (s: string | null) => {
     const params = new URLSearchParams();
     if (s) params.set("category", s);
@@ -48,14 +48,14 @@ export default async function CataloguePage(props: PageProps<"/dashboard/catalog
           defaultValue={q}
           placeholder="Search products or suppliers"
           aria-label="Search the catalogue"
-          className="min-w-0 flex-1 rounded-md border border-line bg-card px-3.5 py-2 text-sm"
+          className="min-h-11 min-w-0 flex-1 rounded-md border border-line bg-card px-3.5 py-2 text-sm"
         />
-        <button type="submit" className="rounded-md border border-ink px-4 py-2 text-sm font-semibold">
+        <button type="submit" className="min-h-11 rounded-md border border-ink px-4 py-2 text-sm font-semibold">
           Search
         </button>
       </form>
 
-      <nav aria-label="Categories" className="flex flex-wrap gap-2">
+      <nav aria-label="Categories" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
         <Link href={hrefFor(null)} className={chip(!slug)}>
           All ({products.length})
         </Link>
