@@ -104,19 +104,40 @@ const nodes: [number, number, string][] = [
   [780, 79, "Inland delivery"], [1010, 150, "Your doorstep"],
 ];
 
+const regions: Record<number, string> = { 0: "China", 4: "Zimbabwe" };
+const stopDot = (i: number) =>
+  i === 0 ? "border-ink bg-ink" : i === nodes.length - 1 ? "border-amber bg-amber" : "border-brand bg-card";
+
 export function Corridor() {
   return (
-    <svg viewBox="0 0 1100 200" role="img" aria-label="Route from supplier in China to doorstep in Zimbabwe" className="mb-7 block h-auto w-full" fontFamily="var(--font-hanken)">
-      <path d="M90 150 Q550 -40 1010 150" fill="none" stroke="var(--line)" strokeWidth="3" />
-      <path className="arc" d="M90 150 Q550 -40 1010 150" fill="none" stroke="var(--brand)" strokeWidth="3" />
-      {nodes.map(([x, y, t], i) => (
-        <g key={t}>
-          <circle cx={x} cy={y} r={i % 4 ? 8 : 11} fill={i === 4 ? "var(--amber)" : i === 0 ? "var(--ink)" : "var(--card)"} stroke={i % 4 ? "var(--brand)" : "none"} strokeWidth="3" />
-          <text x={x} y={y + 32} textAnchor="middle" fontSize="13" fill="var(--mute)">{t}</text>
-        </g>
-      ))}
-      <text x="90" y="108" textAnchor="middle" fontSize="13" fontWeight="600" fill="var(--ink)">China</text>
-      <text x="1010" y="108" textAnchor="middle" fontSize="13" fontWeight="600" fill="var(--ink)">Zimbabwe</text>
-    </svg>
+    <>
+      {/* Wide screens: the arc. Its 13px labels shrink to about 4px on a phone, so it is hidden there. */}
+      <svg viewBox="0 0 1100 200" role="img" aria-label="Route from supplier in China to doorstep in Zimbabwe" className="mb-7 hidden h-auto w-full md:block" fontFamily="var(--font-hanken)">
+        <path d="M90 150 Q550 -40 1010 150" fill="none" stroke="var(--line)" strokeWidth="3" />
+        <path className="arc" d="M90 150 Q550 -40 1010 150" fill="none" stroke="var(--brand)" strokeWidth="3" />
+        {nodes.map(([x, y, t], i) => (
+          <g key={t}>
+            <circle cx={x} cy={y} r={i % 4 ? 8 : 11} fill={i === 4 ? "var(--amber)" : i === 0 ? "var(--ink)" : "var(--card)"} stroke={i % 4 ? "var(--brand)" : "none"} strokeWidth="3" />
+            <text x={x} y={y + 32} textAnchor="middle" fontSize="13" fill="var(--mute)">{t}</text>
+          </g>
+        ))}
+        <text x="90" y="108" textAnchor="middle" fontSize="13" fontWeight="600" fill="var(--ink)">China</text>
+        <text x="1010" y="108" textAnchor="middle" fontSize="13" fontWeight="600" fill="var(--ink)">Zimbabwe</text>
+      </svg>
+
+      {/* Phones: the same five stops as a vertical route. */}
+      <ol aria-label="Route from supplier in China to doorstep in Zimbabwe" className="mb-7 rounded-lg border border-line bg-card p-5 md:hidden">
+        {nodes.map(([, , t], i) => (
+          <li key={t} className="relative flex gap-4 pb-6 last:pb-0">
+            {i < nodes.length - 1 && <span aria-hidden="true" className="absolute left-[7px] top-5 h-full border-l-2 border-dashed border-brand/60" />}
+            <span aria-hidden="true" className={`relative mt-0.5 size-4 shrink-0 rounded-full border-2 ${stopDot(i)}`} />
+            <div className="leading-tight">
+              {regions[i] && <p className="mb-0.5 text-xs font-semibold uppercase tracking-wide text-ink">{regions[i]}</p>}
+              <p className="text-[15px] text-mute">{t}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </>
   );
 }
