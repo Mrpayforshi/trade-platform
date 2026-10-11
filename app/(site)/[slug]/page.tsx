@@ -23,14 +23,14 @@ export default async function InnerPage({ params }: Props) {
   if (!p) notFound();
   return (
     <>
-      <section className="max-w-190 pb-10 pt-18">
-        <h1 className="text-[clamp(34px,5vw,52px)] tracking-tight">{p.title}</h1>
+      <section className="max-w-190 pb-8 pt-10 md:pb-10 md:pt-18">
+        <h1 className="text-[clamp(32px,5vw,52px)] tracking-tight">{p.title}</h1>
         <p className="mt-3 text-lg text-mute">{p.lede}</p>
       </section>
       {p.visual && (
         <div className="mb-10 max-w-130 overflow-hidden rounded-lg border border-line bg-card"><Visual name={p.visual} /></div>
       )}
-      <section className="border-t border-line pb-18 pt-10">
+      <section className="border-t border-line pb-12 pt-8 md:pb-18 md:pt-10">
         <div className={`grid gap-4 ${p.cols.length > 1 ? "md:grid-cols-2" : "max-w-190"}`}>
           {p.cols.map((c, i) => (
             <div key={i} className="rounded-lg border border-line bg-card p-5.5">
