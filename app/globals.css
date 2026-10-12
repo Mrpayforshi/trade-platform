@@ -55,6 +55,18 @@ h1, h2, h3 {
   line-height: 1.1;
 }
 
+/* Ship: hidden unless motion is allowed. The static route stays. */
+.route-ship,
+.lane-ship {
+  display: none;
+}
+
+@property --t {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .arc {
     stroke-dasharray: 4 8;
@@ -62,5 +74,47 @@ h1, h2, h3 {
   }
   @keyframes flow {
     to { stroke-dashoffset: -24; }
+  }
+
+  .route-ship {
+    display: inline;
+  }
+
+  /* LaneShip: a relay along HTML connectors. Each connector's ship gets a turn of 1.6s
+     (--i is its position), so a 4-connector route takes 6.4s end to end, then repeats.
+     The window length in the keyframes is 1/segments of the cycle, hence one set per count. */
+  .lane-ship {
+    display: block;
+    position: absolute;
+    left: -1px;
+    top: calc(var(--t) * 100%);
+    height: auto;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) rotate(90deg);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-delay: calc(var(--i) * 1.6s);
+  }
+  .lane-ship-3 { animation-name: lane-ship-3; animation-duration: 4.8s; }
+  .lane-ship-4 { animation-name: lane-ship-4; animation-duration: 6.4s; }
+
+  @media (min-width: 48rem) {
+    .lane-ship-md-x {
+      left: calc(var(--t) * 100%);
+      top: -1px;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @keyframes lane-ship-4 {
+    0%        { --t: 0; opacity: 0; }
+    2%, 23%   { opacity: 1; }
+    25%, 100% { --t: 1; opacity: 0; }
+  }
+  @keyframes lane-ship-3 {
+    0%          { --t: 0; opacity: 0; }
+    3%, 30.3%   { opacity: 1; }
+    33.3%, 100% { --t: 1; opacity: 0; }
   }
 }
