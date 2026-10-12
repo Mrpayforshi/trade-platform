@@ -1,3 +1,4 @@
+  import { LaneShip } from "@/components/brand/RouteShip";
 import type { StepStatus } from "@/lib/dashboard/journey";
 
 type Step = { label: string; note?: string; status: StepStatus };
@@ -78,7 +79,11 @@ export function TradeLane({ nodes }: { nodes: LaneNode[] }) {
                 <span className="sr-only"> — {statusText[n.status]}</span>
               </p>
             </div>
-            {i < nodes.length - 1 && <span aria-hidden="true" className="mx-auto h-5 border-l-2 border-dashed border-mute/60 md:mx-1 md:h-auto md:min-w-5 md:flex-1 md:border-l-0 md:border-t-2" />}
+            {i < nodes.length - 1 && (
+              <span aria-hidden="true" className="relative mx-auto h-5 border-l-2 border-dashed border-mute/60 md:mx-1 md:h-auto md:min-w-5 md:flex-1 md:border-l-0 md:border-t-2">
+                <LaneShip index={i} segments={(nodes.length - 1) as 3 | 4} responsive />
+              </span>
+            )}
           </li>
         ))}
       </ol>
