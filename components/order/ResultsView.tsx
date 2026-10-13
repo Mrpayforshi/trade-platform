@@ -16,6 +16,7 @@ import {
   type View,
 } from "@/lib/order/match";
 import type { ListLine } from "@/lib/order/parse-list";
+import { SearchComplete } from "./SearchComplete";
 import { QuoteRequestButton, type QuoteRequest } from "./QuoteRequestButton";
 
 // Signed out: the first item opens in full (top 3), supplier names are hidden, the other
@@ -352,8 +353,12 @@ export function ResultsView({
       active ? "border-ink bg-ink font-semibold text-paper" : "border-line bg-card font-medium hover:border-ink"
     }`;
 
+  const optionCount = results.reduce((n, r) => n + r.matches.length, 0);
+  const unmatched = results.filter((r) => r.matches.length === 0).length;
+
   return (
     <div>
+      <SearchComplete listKey={list} items={results.length} options={optionCount} unmatched={unmatched} member={member} />
       <section aria-label="Your list">
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <h2 className="text-3xl md:text-4xl">Your list, matched</h2>
