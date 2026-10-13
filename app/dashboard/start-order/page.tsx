@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EmptyNote, PageHeading } from "@/components/dashboard/ui";
+import { CategoryChips } from "@/components/order/CategoryChips";
 import { OrderSearch } from "@/components/order/OrderSearch";
 import { ResultsView } from "@/components/order/ResultsView";
 import { RouteBand } from "@/components/order/RouteBand";
@@ -33,6 +34,7 @@ export default async function StartOrderPage({ searchParams }: Props) {
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start">
         <div className="min-w-0 flex-1">
           <OrderSearch action="/dashboard/start-order" list={list} placeholder={buildPlaceholder(offers)} view={view} member />
+          {!results && <CategoryChips offers={offers} basePath="/dashboard/start-order" />}
         </div>
         <RouteBand className="max-w-75 shrink-0 self-center lg:w-72" />
       </div>
