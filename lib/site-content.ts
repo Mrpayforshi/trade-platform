@@ -12,6 +12,7 @@ export const stages: Stage[] = [
 ];
 
 export const nav = [
+  { label: "Start order", items: [{ href: "/start-order", label: "Start order", hint: "" }] },
   { label: "Platform", items: [
     { href: "/how-it-works", label: "How it works", hint: "Quote to doorstep, step by step" },
     { href: "/compliance", label: "Compliance", hint: "Permits checked before shipping" },
