@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+ import type { Metadata } from "next";
+import { CategoryChips } from "@/components/order/CategoryChips";
 import { OrderSearch } from "@/components/order/OrderSearch";
 import { ResultsView } from "@/components/order/ResultsView";
 import { RouteBand } from "@/components/order/RouteBand";
@@ -31,17 +31,11 @@ export default async function StartOrderPage({ searchParams }: Props) {
     data: { user },
   } = await db.auth.getUser();
 
-  // Signed-in buyers get the full version inside the dashboard, with the same search.
-  if (user) {
-    const params = new URLSearchParams();
-    if (list) params.set("list", list);
-    if (requested !== "match") params.set("by", requested);
-    const qs = params.toString();
-    redirect(qs ? `/dashboard/start-order?${qs}` : "/dashboard/start-order");
-  }
+  // Signed-in buyers stay on this page and get the full results (real supplier names, quotes, by-supplier view).
+  const member = !!user;
 
   // The by-supplier view is for accounts only; this is enforced here, not just hidden in the UI.
-  const view = requested === "supplier" ? "match" : requested;
+  const view = requested === "supplier" && !member ? "match" : requested;
 
   const { offers, failed } = await loadOffers(db);
   const results = list.trim() ? searchOffers(offers, list) : null;
@@ -57,7 +51,8 @@ export default async function StartOrderPage({ searchParams }: Props) {
         </p>
         <RouteBand className={results ? "mt-6 max-w-75" : "mt-8 max-w-130"} />
         <div className="mt-8">
-          <OrderSearch action="/start-order" list={list} placeholder={buildPlaceholder(offers)} view={view} member={false} />
+          <OrderSearch action="/start-order" list={list} placeholder={buildPlaceholder(offers)} view={view} member={member} />
+          {!results && <CategoryChips offers={offers} basePath="/start-order" />}
         </div>
       </section>
 
@@ -72,7 +67,7 @@ export default async function StartOrderPage({ searchParams }: Props) {
           {results.length === 0 ? (
             <EmptyNote>We could not find any items in that list. Try one item per line, for example a quantity and a product.</EmptyNote>
           ) : (
-            <ResultsView results={results} view={view} list={list} member={false} basePath="/start-order" />
+            <ResultsView results={results} view={view} list={list} member={member} basePath="/start-order" />
           )}
         </section>
       )}
