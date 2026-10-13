@@ -17,6 +17,7 @@ export const navGroups: NavGroup[] = [
   {
     label: "Source",
     items: [
+      { label: "Start order", href: "/dashboard/start-order", icon: "M4 6h9M4 12h5M4 18h5M16 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 21l-2.2-2.2" },
       { label: "Catalogue", href: "/dashboard/catalogue", icon: "M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8" },
       { label: "Suppliers", href: "/dashboard/suppliers", icon: "M4 21V8l8-5 8 5v13M9 21v-6h6v6M8 11h.01M12 11h.01M16 11h.01" },
       { label: "RFQs and quotes", icon: "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6" },
