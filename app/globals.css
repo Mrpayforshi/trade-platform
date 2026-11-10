@@ -1,25 +1,18 @@
-@import "tailwindcss";
+  @import "tailwindcss";
 
+/* Palette, roughly 60 / 30 / 10:
+   oat milk (paper, card, line) is the base, forest green (brand) is the second colour,
+   tomato red is the accent. Brick is kept only for errors and disputes. Light theme only. */
 :root {
-  --paper: #f7f5f0;
-  --card: #fdfcfa;
-  --ink: #14213d;
-  --mute: #6f6a60;
-  --line: #ddd8cc;
-  --brand: #147a43;
-  --amber: #f2a33a;
+  color-scheme: light;
+  --paper: #f1e9d9;
+  --card: #f8f3e8;
+  --ink: #16261c;
+  --mute: #59604f;
+  --line: #d8cdb5;
+  --brand: #1f4d36;
+  --tomato: #ea5a41;
   --brick: #a13d2c;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0e1626;
-    --card: #152036;
-    --ink: #edeae2;
-    --mute: #9aa3b5;
-    --line: #2a3752;
-    --brand: #2fbf72;
-  }
 }
 
 @theme inline {
@@ -29,7 +22,7 @@
   --color-mute: var(--mute);
   --color-line: var(--line);
   --color-brand: var(--brand);
-  --color-amber: var(--amber);
+  --color-tomato: var(--tomato);
   --color-brick: var(--brick);
   --font-sans: var(--font-hanken), system-ui, sans-serif;
   --font-serif: var(--font-zilla), Georgia, serif;
@@ -53,6 +46,14 @@ h1, h2, h3 {
   font-family: var(--font-serif);
   font-weight: 600;
   line-height: 1.1;
+}
+
+/* Headings are forest green. Kept in the base layer so a text-* class on a heading
+   (for example text-paper on a green band) still wins. */
+@layer base {
+  h1, h2, h3 {
+    color: var(--brand);
+  }
 }
 
 /* Ship: hidden unless motion is allowed. The static route stays. */
