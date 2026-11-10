@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM =
-  process.env.RESEND_FROM_EMAIL ?? "TradeLink <notifications@tradelink.example>";
+  process.env.RESEND_FROM_EMAIL ?? "Nexum <notifications@nexum.example>";
 
 // Subject lines by event_type. event_type is free text on the notifications
 // table (no enum), so this is a best-effort lookup with a generic fallback
@@ -19,7 +19,7 @@ const SUBJECTS: Record<string, string> = {
 };
 
 export async function sendEmail(to: string, eventType: string, content: string) {
-  const subject = SUBJECTS[eventType] ?? "TradeLink update";
+  const subject = SUBJECTS[eventType] ?? "Nexum update";
   const { error } = await resend.emails.send({
     from: FROM,
     to,
