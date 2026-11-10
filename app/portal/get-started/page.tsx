@@ -9,7 +9,7 @@ type StepState = "done" | "now" | "next";
 
 const badge: Record<StepState, string> = {
   done: "border-brand bg-brand text-white",
-  now: "border-amber bg-amber text-[#14213d]",
+  now: "border-tomato bg-tomato text-ink",
   next: "border-line text-mute",
 };
 const badgeText: Record<StepState, string> = { done: "Done", now: "Next", next: "Later" };
