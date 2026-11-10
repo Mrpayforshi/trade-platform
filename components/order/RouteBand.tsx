@@ -18,7 +18,7 @@ export function RouteBand({ className = "" }: { className?: string }) {
       <path d={ROUTE} fill="none" stroke="var(--line)" strokeWidth="3" />
       <path className="arc" d={ROUTE} fill="none" stroke="var(--brand)" strokeWidth="3" />
       <circle cx="60" cy="120" r="9" fill="var(--ink)" />
-      <circle cx="540" cy="40" r="9" fill="var(--amber)" />
+      <circle cx="540" cy="40" r="9" fill="var(--tomato)" />
       <g fill="var(--mute)" fontSize="13" textAnchor="middle">
         <text x="60" y="146">China</text>
         <text x="540" y="24">Zimbabwe</text>
