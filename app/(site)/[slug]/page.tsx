@@ -45,7 +45,7 @@ export default async function InnerPage({ params }: Props) {
             </div>
           ))}
         </div>
-        {p.note && <p className="mt-5 max-w-190 border-l-[3px] border-amber bg-card px-4 py-2.5 text-sm text-mute">{p.note}</p>}
+        {p.note && <p className="mt-5 max-w-190 border-l-[3px] border-tomato bg-card px-4 py-2.5 text-sm text-mute">{p.note}</p>}
       </section>
     </>
   );
