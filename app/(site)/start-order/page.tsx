@@ -1,9 +1,9 @@
- import type { Metadata } from "next";
-import { CategoryChips } from "@/components/order/CategoryChips";
+import type { Metadata } from "next";
 import { OrderSearch } from "@/components/order/OrderSearch";
 import { ResultsView } from "@/components/order/ResultsView";
 import { RouteBand } from "@/components/order/RouteBand";
 import { EmptyNote } from "@/components/dashboard/ui";
+import { itemAvailability, STARTER_CATEGORIES } from "@/lib/order/categories";
 import { parseView } from "@/lib/order/match";
 import { buildPlaceholder, loadOffers, readList, searchOffers } from "@/lib/order/search";
 import { createServerSupabase } from "@/lib/supabase/server";
@@ -39,6 +39,7 @@ export default async function StartOrderPage({ searchParams }: Props) {
 
   const { offers, failed } = await loadOffers(db);
   const results = list.trim() ? searchOffers(offers, list) : null;
+  const availability = itemAvailability(offers);
 
   return (
     <>
@@ -51,8 +52,15 @@ export default async function StartOrderPage({ searchParams }: Props) {
         </p>
         <RouteBand className={results ? "mt-6 max-w-75" : "mt-8 max-w-130"} />
         <div className="mt-8">
-          <OrderSearch action="/start-order" list={list} placeholder={buildPlaceholder(offers)} view={view} member={member} />
-          {!results && <CategoryChips offers={offers} basePath="/start-order" />}
+          <OrderSearch
+            action="/start-order"
+            list={list}
+            placeholder={buildPlaceholder(offers)}
+            view={view}
+            member={member}
+            categories={STARTER_CATEGORIES}
+            availability={failed ? undefined : availability}
+          />
         </div>
       </section>
 
