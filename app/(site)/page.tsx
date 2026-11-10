@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { OrderSearch } from "@/components/order/OrderSearch";
 import { RouteBand } from "@/components/order/RouteBand";
+import { HowItWorks } from "@/components/site/HowItWorks";
 import { Passport } from "@/components/site/Passport";
 import { Corridor, Visual, type VisualKey } from "@/components/site/Visuals";
 import { btnGhost, btnPrimary } from "@/components/site/ui";
+import { STARTER_CATEGORIES } from "@/lib/order/categories";
 
 const problems = [
   ["Supplier trust", "Many suppliers, unclear quality", "Curated panel with business and factory checks"],
@@ -22,6 +24,26 @@ const features: { title: string; text: string; visual: VisualKey; wide?: boolean
   { title: "Delivery record", text: "Every order adds to a permanent supplier performance record.", visual: "record" },
 ];
 
+// Plain-language basics for a first-time visitor. Drawn from the business plan's executive
+// summary, problem statement and target customers; no claims beyond what the plan states.
+const basics = [
+  {
+    label: "What Nexum is",
+    title: "One managed import, from supplier to doorstep.",
+    text: "Nexum is a trade platform for the China to Zimbabwe corridor. It brings supplier search, verification, cost, permits, payment, freight, customs and delivery into one transaction.",
+  },
+  {
+    label: "Who it is for",
+    title: "Zimbabwean businesses that import from China.",
+    text: "Small and medium importers, established companies, project developers and industrial or mining buyers who want less risk and fewer parties to manage.",
+  },
+  {
+    label: "Why we exist",
+    title: "Importing is fragmented, and the true cost shows up late.",
+    text: "Buyers juggle suppliers, payments, permits, freight, clearing and trucking, and often learn the real cost and requirements too late. We put it in one place.",
+  },
+];
+
 const H2 = ({ a, b }: { a: string; b: string }) => (
   <h2 className="mb-3 text-[clamp(28px,4vw,40px)] tracking-tight">{a}<br /><span className="text-mute">{b}</span></h2>
 );
@@ -36,20 +58,37 @@ export default function Home() {
         <div>
           <p className="max-w-[46ch] text-lg text-mute">One managed transaction from supplier check to your doorstep: landed cost, permits, payment, freight, customs and delivery.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/start-order" className={btnPrimary}>Start order</Link>
-            <Link href="/how-it-works" className={btnGhost}>See how it works</Link>
+            <Link href="#start-order" className={btnPrimary}>Start order</Link>
+            <Link href="#how-it-works" className={btnGhost}>See how it works</Link>
           </div>
         </div>
       </div>
 
-      <section className="mb-8 rounded-xl border border-line bg-card p-5 md:p-8">
+      <section aria-label="About Nexum" className="pb-10 md:pb-12">
+        <div className="grid gap-4 md:grid-cols-3">
+          {basics.map((b) => (
+            <div key={b.label} className="rounded-lg border border-line bg-card p-5.5">
+              <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-brand">{b.label}</p>
+              <h2 className="mt-2 text-xl leading-snug">{b.title}</h2>
+              <p className="mt-2 text-[15px] text-mute">{b.text}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 border-l-[3px] border-amber pl-4 text-lg">
+          Fewer suppliers, better suppliers. <span className="text-mute">Fewer steps, not fewer controls.</span>
+        </p>
+      </section>
+
+      <HowItWorks />
+
+      <section id="start-order" className="mb-8 scroll-mt-20 rounded-xl border border-line bg-card p-5 md:p-8">
         <div className="grid items-center gap-6 md:grid-cols-[1.2fr_1fr]">
           <div>
             <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-brand">Start order</p>
             <h2 className="mt-2 text-[clamp(26px,3.6vw,36px)] tracking-tight">Your whole import list, in one search.</h2>
-            <p className="mt-2 text-mute">Write what you need, one item per line. We match each line to approved suppliers and compare them by quality, price and lead time.</p>
+            <p className="mt-2 text-mute">Write what you need, one item per line, or pick from the categories. We match each line to approved suppliers and compare them by quality, price and lead time.</p>
             <div className="mt-5">
-              <OrderSearch action="/start-order" list="" placeholder={EXAMPLE} view="match" member={false} />
+              <OrderSearch action="/start-order" list="" placeholder={EXAMPLE} view="match" member={false} categories={STARTER_CATEGORIES} />
             </div>
           </div>
           <RouteBand className="mx-auto max-w-105" />
@@ -112,7 +151,7 @@ export default function Home() {
           <h2 className="text-[clamp(28px,4vw,40px)]">One transaction.<br /><span className="text-[#9aa3b5]">One record. One team to call.</span></h2>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/start-order" className="inline-block rounded-md bg-amber px-4.5 py-2.5 font-semibold text-[#14213d]">Start order</Link>
-            <Link href="/how-it-works" className="inline-block rounded-md border border-[#f7f5f0] px-4.5 py-2.5 font-semibold">See how it works</Link>
+            <Link href="#how-it-works" className="inline-block rounded-md border border-[#f7f5f0] px-4.5 py-2.5 font-semibold">See how it works</Link>
             <Link href="/about" className="inline-block rounded-md border border-[#f7f5f0] px-4.5 py-2.5 font-semibold">Meet the team</Link>
           </div>
         </div>
