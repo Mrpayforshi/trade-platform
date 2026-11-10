@@ -74,11 +74,11 @@ function buildActions(buyer: Buyer, kycDone: boolean, data: DashboardData): Acti
 const landedParts: { key: keyof LandedRow; label: string; bar: string }[] = [
   { key: "product_cost", label: "Product", bar: "bg-ink" },
   { key: "freight_cost", label: "Freight", bar: "bg-brand" },
-  { key: "duty_estimate", label: "Duties and taxes (estimate)", bar: "bg-amber" },
+  { key: "duty_estimate", label: "Duties and taxes (estimate)", bar: "bg-tomato" },
   { key: "delivery_cost", label: "Inland delivery", bar: "bg-mute" },
   { key: "clearing_cost", label: "Clearing", bar: "bg-brand/50" },
   { key: "insurance_cost", label: "Insurance", bar: "bg-ink/50" },
-  { key: "platform_fee", label: "Nexum fee", bar: "bg-amber/50" },
+  { key: "platform_fee", label: "Nexum fee", bar: "bg-tomato/50" },
 ];
 
 function releaseConditions(t: TxRow) {
@@ -101,10 +101,10 @@ function laneNodes(t: TxRow) {
   const delivered = t.state === "delivered" || t.state === "closed";
   const st = (done: boolean, now: boolean): StepStatus => (done ? "done" : now ? "now" : "todo");
   return [
-    { title: "Supplier", sub: t.suppliers?.name ?? "Approved supplier", meta: cur >= 5 ? "Released and dispatched" : "Preparing release", status: st(cur >= 5, cur < 5), icon: "M4 21V8l8-5 8 5v13M9 21v-6h6v6" },
-    { title: "Freight", sub: "Sea or air, insured", meta: cur >= 6 ? "Arrived" : cur === 5 ? "Moving" : "Not started", status: st(cur >= 6, cur === 5), icon: "M3 6h11v10H3zM14 9h4l3 3v4h-7M7 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" },
-    { title: "Customs", sub: "Registered clearing agent", meta: delivered || cur >= 7 ? "Cleared" : cur === 6 ? "Clearing" : "Not started", status: st(delivered || cur >= 7, cur === 6), icon: "M9 4h6v3H9zM7 5H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-1M9 14l2 2 4-4" },
-    { title: "Doorstep", sub: "Your address", meta: delivered ? "Delivered" : "Not started", status: st(delivered, false), icon: "M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" },
+    { title: "Supplier", sub: t.suppliers?.name ?? "Approved supplier", meta: cur >= 5 ? "Released and dispatched" : "Preparing release", status: st(cur >= 5, cur < 5) },
+    { title: "Freight", sub: "Sea or air, insured", meta: cur >= 6 ? "Arrived" : cur === 5 ? "Moving" : "Not started", status: st(cur >= 6, cur === 5) },
+    { title: "Customs", sub: "Registered clearing agent", meta: delivered || cur >= 7 ? "Cleared" : cur === 6 ? "Clearing" : "Not started", status: st(delivered || cur >= 7, cur === 6) },
+    { title: "Doorstep", sub: "Your address", meta: delivered ? "Delivered" : "Not started", status: st(delivered, false) },
   ];
 }
 
@@ -135,8 +135,8 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
         title={`${greeting(now)}, ${name}`}
         lede={
           actions.length > 0
-            ? `${actions.length} ${actions.length === 1 ? "item needs" : "items need"} your attention. Every order is one auditable journey, from supplier check to your doorstep.`
-            : "Every order is one auditable journey, from supplier check to your doorstep."
+            ? `${actions.length} ${actions.length === 1 ? "item needs" : "items need"} your attention. Follow each order from supplier check to delivery.`
+            : "Follow each order from supplier check to delivery."
         }
         action={
           <Link href="/dashboard/catalogue" className="rounded-md border border-brand bg-brand px-4.5 py-2.5 text-[15px] font-semibold text-white">
@@ -155,7 +155,7 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
             <ul className="divide-y divide-line">
               {actions.map((a) => (
                 <li key={a.title} className="flex items-start gap-3 py-3 first:pt-0">
-                  <span className={`mt-1.5 size-2.5 shrink-0 rounded-full ${a.tone === "bad" ? "bg-brick" : "bg-amber"}`} aria-hidden="true" />
+                  <span className={`mt-1.5 size-2.5 shrink-0 rounded-full ${a.tone === "bad" ? "bg-brick" : "bg-tomato"}`} aria-hidden="true" />
                   <div className="min-w-0">
                     <p className="font-semibold">{a.title}</p>
                     <p className="text-[13px] text-mute">{a.meta}</p>
@@ -226,7 +226,7 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
                 <ul className="mt-3 flex flex-col gap-1.5">
                   {releaseConditions(featured).map((c) => (
                     <li key={c.label} className={`flex items-center gap-3 rounded-lg px-3 py-2.5 ${c.done ? "bg-brand/10" : "border border-line"}`}>
-                      <span className={`flex size-5 shrink-0 items-center justify-center rounded-full border-2 ${c.done ? "border-brand bg-brand text-paper" : "border-amber"}`}>
+                      <span className={`flex size-5 shrink-0 items-center justify-center rounded-full border-2 ${c.done ? "border-brand bg-brand text-paper" : "border-tomato"}`}>
                         {c.done && (
                           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                             <path d="M5 12l5 5 9-10" />
@@ -342,9 +342,6 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
             <ul className="divide-y divide-line">
               {data.documents.map((d) => (
                 <li key={d.id} className="flex items-center gap-3 py-2.5 first:pt-0">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 text-mute">
-                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5" />
-                  </svg>
                   <span className="flex-1 font-semibold capitalize">{d.doc_type.replaceAll("_", " ")}</span>
                   <span className="text-[13px] text-mute">{formatDate(d.created_at)}</span>
                 </li>
@@ -353,9 +350,9 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
           )}
         </Card>
 
-        <section className="flex flex-col gap-3 rounded-xl bg-ink p-6 text-paper">
+        <section className="flex flex-col gap-3 rounded-xl bg-brand p-6 text-paper">
           <Eyebrow><span className="text-paper/70">Trade visit</span></Eyebrow>
-          <h2 className="text-2xl">Prefer to see it yourself?</h2>
+          <h2 className="text-2xl text-paper">Prefer to see it yourself?</h2>
           <p className="text-paper/80">
             Plan a sourcing trip to verified factories, with inspection and interpreter support, on the same record as your orders.
           </p>
@@ -364,14 +361,14 @@ export function DashboardView({ buyer, kycDone, data, now = new Date() }: Props)
               You have {data.plannedTrips} {data.plannedTrips === 1 ? "trip" : "trips"} planned or confirmed.
             </p>
           )}
-          <Link href="/trade-visit" className="mt-1 self-start rounded-md bg-paper px-4 py-2 text-sm font-semibold text-ink">
+          <Link href="/trade-visit" className="mt-1 self-start rounded-md bg-tomato px-4 py-2 text-sm font-semibold text-ink">
             How Trade Visits work
           </Link>
         </section>
       </div>
 
       {buyer.kyc_status === "rejected" && (
-        <p className="text-sm text-brick dark:text-amber">Your business verification needs attention. Our team will be in touch.</p>
+        <p className="text-sm text-brick">Your business verification needs attention. Our team will be in touch.</p>
       )}
     </div>
   );
