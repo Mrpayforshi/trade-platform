@@ -16,6 +16,7 @@ import {
   type View,
 } from "@/lib/order/match";
 import type { ListLine } from "@/lib/order/parse-list";
+import { OfferDetail } from "./OfferDetail";
 import { SearchComplete } from "./SearchComplete";
 import { QuoteRequestButton, type QuoteRequest } from "./QuoteRequestButton";
 
@@ -75,26 +76,129 @@ function specFor(line: ListLine, productName: string, supplierName: string, unit
   return `${line.term}: ${productName} from ${supplierName}. ${qty}`;
 }
 
+// ---- how the options on screen compare with each other ---------------------
+// Worked out from the offers shown for one line, so every statement in the details panel
+// is a plain fact about the data on the page. Nothing here is a rating or a promise.
+
+type Facts = {
+  minPrice: number;
+  priceVaries: boolean;
+  minLead: number | null;
+  leadVaries: boolean;
+  maxScore: number | null;
+  scoreVaries: boolean;
+};
+
+function compareFacts(shown: Match[]): Facts {
+  const prices = shown.map((m) => m.product.unit_price_usd);
+  const leads = shown.map((m) => m.product.lead_time_days).filter((n): n is number => n != null);
+  const scores = shown.map((m) => m.product.supplier.score).filter((n): n is number => n != null);
+  return {
+    minPrice: prices.length ? Math.min(...prices) : 0,
+    priceVaries: new Set(prices).size > 1,
+    minLead: leads.length ? Math.min(...leads) : null,
+    leadVaries: new Set(leads).size > 1,
+    maxScore: scores.length ? Math.max(...scores) : null,
+    scoreVaries: new Set(scores).size > 1,
+  };
+}
+
+function Tag({ children }: { children: string }) {
+  return <span className="rounded-full bg-brand/10 px-2.5 py-0.5 text-xs font-semibold text-brand">{children}</span>;
+}
+
+function DetailPanel({ match, line, facts }: { match: Match; line: ListLine; facts: Facts }) {
+  const p = match.product;
+  const over = exceedsQuantity(p, line.quantity);
+
+  const priceNote =
+    facts.minPrice > 0 && p.unit_price_usd > facts.minPrice
+      ? `${Math.round((p.unit_price_usd / facts.minPrice - 1) * 100)}% above the lowest price shown`
+      : facts.priceVaries
+        ? "The lowest price among the options shown"
+        : "Same unit price as the other options shown";
+
+  const leadNote =
+    p.lead_time_days == null
+      ? "The supplier has not stated a lead time. We confirm it in your quote."
+      : facts.minLead != null && p.lead_time_days > facts.minLead
+        ? `${p.lead_time_days - facts.minLead} days slower than the fastest shown`
+        : facts.leadVaries
+          ? "The fastest lead time among the options shown"
+          : "Same lead time as the other options shown";
+
+  const fact = "text-sm text-mute";
+  const head = "text-[11px] font-bold uppercase tracking-[0.08em] text-mute";
+
+  return (
+    <div className="mt-1 grid gap-x-8 gap-y-4 border-t border-line pt-4 md:grid-cols-2">
+      <div>
+        <p className={head}>About this product</p>
+        <p className="mt-1.5 text-[15px] leading-relaxed">{p.specification?.trim() || "No specification has been listed yet. We confirm it with the supplier when you request a quote."}</p>
+        <p className={`${fact} mt-3`}>
+          {p.category ? `${p.category.name} · ` : ""}
+          Made in {p.supplier.country ?? "China"}
+        </p>
+      </div>
+      <dl className="grid gap-3">
+        <div>
+          <dt className={head}>Price</dt>
+          <dd className={fact}>{priceNote}</dd>
+        </div>
+        <div>
+          <dt className={head}>Lead time</dt>
+          <dd className={fact}>{leadNote} This is the supplier&apos;s own time, before freight and clearing.</dd>
+        </div>
+        <div>
+          <dt className={head}>Trust score</dt>
+          <dd className={fact}>
+            {p.supplier.score == null
+              ? "New to Nexum, so there is no delivery record yet."
+              : "Built from this supplier's delivery record: on-time release, product conformity, inspections and disputes."}
+          </dd>
+        </div>
+        <div>
+          <dt className={head}>Minimum order</dt>
+          <dd className={fact}>
+            {p.moq} {p.unit}.{over ? ` That is above the ${line.quantity} you asked for, so the supplier may need a larger order.` : ""}
+          </dd>
+        </div>
+      </dl>
+      <p className="border-l-[3px] border-amber bg-paper px-3 py-2 text-[13px] text-mute md:col-span-2">
+        Supplier price only. Freight, insurance, duty, clearing and delivery are added in your landed-cost quote, and duty and
+        permits depend on the product.
+      </p>
+    </div>
+  );
+}
+
 function OfferRow({
   position,
   match,
   line,
   member,
   label,
+  facts,
 }: {
   position: number;
   match: Match;
   line: ListLine;
   member: boolean;
   label: string;
+  facts: Facts;
 }) {
   const p = match.product;
   const total = lineTotal(p, line.quantity);
   const over = exceedsQuantity(p, line.quantity);
   const warranty = warrantyLabel(p.warranty_months);
 
+  const tags: string[] = [];
+  if (facts.priceVaries && p.unit_price_usd === facts.minPrice) tags.push("Lowest price");
+  if (facts.leadVaries && p.lead_time_days != null && p.lead_time_days === facts.minLead) tags.push("Fastest lead time");
+  if (facts.scoreVaries && p.supplier.score != null && p.supplier.score === facts.maxScore) tags.push("Highest trust score");
+
   return (
-    <li className="flex flex-wrap items-center gap-x-8 gap-y-4 rounded-xl border border-line bg-card p-5">
+    <li className="group flex flex-wrap items-center gap-x-8 gap-y-4 rounded-xl border border-line bg-card p-5 transition-colors hover:border-ink">
       <div className="min-w-0 flex-[1_1_200px]">
         <div className="flex items-center gap-2.5">
           <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-paper">
@@ -105,6 +209,13 @@ function OfferRow({
         <p className="mt-1.5 text-sm text-mute">{p.supplier.country ?? "China"} · Approved supplier</p>
         {!member && <p className="mt-1 text-[13px] text-mute">Name shown after you sign in</p>}
         <p className="mt-2 text-[15px]">{p.name}</p>
+        {tags.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {tags.map((t) => (
+              <Tag key={t}>{t}</Tag>
+            ))}
+          </div>
+        )}
       </div>
 
       <dl className="flex flex-[2_1_380px] flex-wrap gap-x-7 gap-y-3">
@@ -143,6 +254,10 @@ function OfferRow({
           </div>
         )}
       </div>
+
+      <OfferDetail>
+        <DetailPanel match={match} line={line} facts={facts} />
+      </OfferDetail>
     </li>
   );
 }
@@ -161,6 +276,7 @@ function LineSection({
   const { line, matches } = result;
   const limit = member ? MEMBER_OFFERS : PREVIEW_OFFERS;
   const shown = rank(matches, lens).slice(0, limit);
+  const facts = compareFacts(shown);
 
   return (
     <section aria-label={line.term} className="mt-8">
@@ -183,18 +299,22 @@ function LineSection({
           </EmptyNote>
         </div>
       ) : (
-        <ul className="mt-4 flex flex-col gap-3">
-          {shown.map((m, i) => (
-            <OfferRow
-              key={m.product.id}
-              position={i + 1}
-              match={m}
-              line={line}
-              member={member}
-              label={labels.get(m.product.supplier_id) ?? "Supplier"}
-            />
-          ))}
-        </ul>
+        <>
+          <p className="mt-3 text-[13px] text-mute">Hover over an option, or tap Details, to see more about it.</p>
+          <ul className="mt-3 flex flex-col gap-3">
+            {shown.map((m, i) => (
+              <OfferRow
+                key={m.product.id}
+                position={i + 1}
+                match={m}
+                line={line}
+                member={member}
+                label={labels.get(m.product.supplier_id) ?? "Supplier"}
+                facts={facts}
+              />
+            ))}
+          </ul>
+        </>
       )}
     </section>
   );
