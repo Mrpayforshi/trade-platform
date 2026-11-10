@@ -92,7 +92,7 @@ export default async function StartOrderPage({ searchParams }: Props) {
               </div>
             ))}
           </div>
-          <p className="mt-8 max-w-190 border-l-[3px] border-amber bg-card px-4 py-2.5 text-sm text-mute">
+          <p className="mt-8 max-w-190 border-l-[3px] border-tomato bg-card px-4 py-2.5 text-sm text-mute">
             Supplier prices exclude freight, insurance, duty, clearing and delivery. Landed-cost figures are estimates, not
             official customs assessments.
           </p>
