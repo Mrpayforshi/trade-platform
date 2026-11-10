@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 
@@ -66,7 +66,7 @@ function SearchScreen() {
 function CompareScreen() {
   const rows: [string, string][] = [
     ["Highest trust score", "bg-brand/10 text-brand"],
-    ["Lowest price", "bg-amber/20 text-ink"],
+    ["Lowest price", "bg-tomato/20 text-ink"],
     ["Fastest lead time", "bg-line text-ink"],
   ];
   return (
@@ -94,9 +94,9 @@ function QuoteScreen() {
   const parts: [string, string, string][] = [
     ["Product", "bg-ink", "w-[34%]"],
     ["Freight", "bg-brand", "w-[16%]"],
-    ["Insurance", "bg-amber", "w-[6%]"],
+    ["Insurance", "bg-tomato", "w-[6%]"],
     ["Duty", "bg-brick", "w-[20%]"],
-    ["Clearing", "bg-[#8c8579]", "w-[10%]"],
+    ["Clearing", "bg-mute", "w-[10%]"],
     ["Delivery", "bg-line", "w-[14%]"],
   ];
   return (
@@ -119,7 +119,7 @@ function QuoteScreen() {
   );
 }
 
-const dot = { done: "border-brand bg-brand", now: "border-amber bg-amber", next: "border-mute bg-transparent" };
+const dot = { done: "border-brand bg-brand", now: "border-tomato bg-tomato", next: "border-mute bg-transparent" };
 
 function ChecklistScreen({ title, items }: { title: string; items: [string, keyof typeof dot][] }) {
   return (
@@ -289,11 +289,11 @@ export function HowItWorks() {
       <h2 id="how-heading" className="mb-3 mt-2 text-[clamp(28px,4vw,40px)] tracking-tight">
         Six steps from your list to your door.
         <br />
-        <span className="text-mute">A network of professionals behind each one.</span>
+        <span className="text-mute">Who does what at each one.</span>
       </h2>
       <p className="max-w-[60ch] text-lg text-mute">
-        You deal with one simple flow. Suppliers, inspectors, freight partners, a payment partner, clearing agents and the
-        authorities do the rest, in the right order.
+        You follow one flow. Suppliers, inspectors, freight partners, a payment partner, clearing agents and the
+        authorities each handle their part.
       </p>
 
       <div className="mt-8 grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:gap-10">
