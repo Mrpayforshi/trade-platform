@@ -5,7 +5,7 @@ import { ProductVisual } from "./ProductVisual";
 import { RequestQuoteButton } from "./RequestQuoteButton";
 import { Pill } from "./ui";
 
-const tint = ["bg-line/50", "bg-brand/10", "bg-amber/15"];
+const tint = ["bg-line/50", "bg-brand/10", "bg-tomato/15"];
 
 export function ProductCard({ product: p, compact = false, index = 0 }: { product: ProductRow; compact?: boolean; index?: number }) {
   const supplier = p.suppliers;
