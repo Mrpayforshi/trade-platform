@@ -5,14 +5,6 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { navGroups } from "@/lib/dashboard/nav";
 
-function Icon({ d }: { d: string }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
-      <path d={d} />
-    </svg>
-  );
-}
-
 export function SidebarNav() {
   const pathname = usePathname();
   const [query, setQuery] = useState("");
@@ -49,7 +41,6 @@ export function SidebarNav() {
             if (!item.href) {
               return (
                 <span key={item.label} aria-disabled="true" className={`${base} cursor-default font-medium text-mute`}>
-                  <Icon d={item.icon} />
                   <span className="flex-1">{item.label}</span>
                   <span className="rounded-full border border-line px-2 py-px text-[10px] font-semibold uppercase tracking-wide">Soon</span>
                 </span>
@@ -63,7 +54,6 @@ export function SidebarNav() {
                 aria-current={active ? "page" : undefined}
                 className={`${base} ${active ? "bg-line font-semibold" : "font-medium hover:bg-line/60"}`}
               >
-                <Icon d={item.icon} />
                 {item.label}
               </Link>
             );
