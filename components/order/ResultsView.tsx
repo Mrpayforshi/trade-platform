@@ -64,8 +64,8 @@ function Metric({ label, value, warn }: { label: string; value: string; warn?: s
     <div>
       <dt className="text-[11px] font-bold uppercase tracking-[0.08em] text-mute">{label}</dt>
       <dd className="mt-0.5 text-[17px] font-semibold">
-        <span className={warn ? "text-brick dark:text-amber" : undefined}>{value}</span>
-        {warn && <span className="block text-[13px] font-medium text-brick dark:text-amber">{warn}</span>}
+        <span className={warn ? "text-brick" : undefined}>{value}</span>
+        {warn && <span className="block text-[13px] font-medium text-brick">{warn}</span>}
       </dd>
     </div>
   );
@@ -164,7 +164,7 @@ function DetailPanel({ match, line, facts }: { match: Match; line: ListLine; fac
           </dd>
         </div>
       </dl>
-      <p className="border-l-[3px] border-amber bg-paper px-3 py-2 text-[13px] text-mute md:col-span-2">
+      <p className="border-l-[3px] border-tomato bg-paper px-3 py-2 text-[13px] text-mute md:col-span-2">
         Supplier price only. Freight, insurance, duty, clearing and delivery are added in your landed-cost quote, and duty and
         permits depend on the product.
       </p>
@@ -345,7 +345,7 @@ function SignupGate({ lockedCount, query }: { lockedCount: number; query: string
   return (
     <section aria-label="Create an account" className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-5 rounded-lg bg-ink p-8 text-paper">
       <div className="flex-[1_1_380px]">
-        <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-amber">
+        <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-tomato">
           {lockedCount > 0 ? `${lockedCount} more ${lockedCount === 1 ? "item" : "items"} on your list` : "More suppliers for this item"}
         </p>
         <h3 className="mt-2 text-3xl leading-tight">See every match for every line.</h3>
@@ -419,7 +419,7 @@ function SupplierGroupCard({ group }: { group: SupplierGroup }) {
                   <td className="px-3 py-3.5 text-right">
                     {i.product.lead_time_days == null ? "On request" : `${i.product.lead_time_days} days`}
                   </td>
-                  <td className={`px-3 py-3.5 pr-6 text-right ${over ? "font-semibold text-brick dark:text-amber" : ""}`}>
+                  <td className={`px-3 py-3.5 pr-6 text-right ${over ? "font-semibold text-brick" : ""}`}>
                     {i.product.moq}
                     {over && <span className="block text-[13px] font-medium">Above your {i.line.quantity}</span>}
                   </td>
