@@ -1,11 +1,11 @@
-  import { LaneShip } from "@/components/brand/RouteShip";
+import { LaneShip } from "@/components/brand/RouteShip";
 import type { StepStatus } from "@/lib/dashboard/journey";
 
 type Step = { label: string; note?: string; status: StepStatus };
 
 const circle: Record<StepStatus, string> = {
   done: "border-brand bg-brand text-paper",
-  now: "border-amber bg-card text-ink",
+  now: "border-tomato bg-card text-ink",
   todo: "border-line bg-paper text-mute",
 };
 
@@ -25,7 +25,7 @@ export function Stepper({ steps }: { steps: Step[] }) {
                     <path d="M5 12l5 5 9-10" />
                   </svg>
                 ) : s.status === "now" ? (
-                  <span className="size-2.5 rounded-full bg-amber" />
+                  <span className="size-2.5 rounded-full bg-tomato" />
                 ) : (
                   i + 1
                 )}
@@ -48,13 +48,13 @@ export function Stepper({ steps }: { steps: Step[] }) {
   );
 }
 
-type LaneNode = { title: string; sub: string; meta: string; status: StepStatus; icon: string };
+type LaneNode = { title: string; sub: string; meta: string; status: StepStatus };
 
 /** Dotted "trade lane" canvas: the same order as connected stops. */
 export function TradeLane({ nodes }: { nodes: LaneNode[] }) {
   const ring: Record<StepStatus, string> = {
     done: "bg-brand/15 text-brand",
-    now: "bg-amber/25 text-ink",
+    now: "bg-tomato/25 text-ink",
     todo: "bg-line/70 text-mute",
   };
   return (
@@ -64,10 +64,8 @@ export function TradeLane({ nodes }: { nodes: LaneNode[] }) {
           <li key={n.title} className="flex flex-col md:flex-1 md:flex-row md:items-center">
             <div className="w-full shrink-0 rounded-xl border border-line bg-card p-3.5 md:w-48">
               <div className="flex items-center gap-2.5">
-                <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${ring[n.status]}`}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d={n.icon} />
-                  </svg>
+                <span aria-hidden="true" className={`flex size-9 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${ring[n.status]}`}>
+                  {i + 1}
                 </span>
                 <div className="min-w-0 leading-tight">
                   <p className="font-bold">{n.title}</p>
