@@ -1,4 +1,4 @@
-import Link from "next/link";
+    import Link from "next/link";
 import { OrderSearch } from "@/components/order/OrderSearch";
 import { RouteBand } from "@/components/order/RouteBand";
 import { HowItWorks } from "@/components/site/HowItWorks";
@@ -11,7 +11,7 @@ const problems = [
   ["Supplier trust", "Many suppliers, unclear quality", "Curated panel with business and factory checks"],
   ["True cost", "Product price mistaken for total cost", "Landed-cost estimate before you buy"],
   ["Permits", "Requirements found late", "Regulatory pathway identified before supplier release"],
-  ["Payment risk", "Buyer pays supplier directly", "Licensed payment partner with release conditions"],
+  ["Payment risk", "Buyer pays supplier directly", "Approved payment partner, with release conditions"],
   ["Logistics", "Separate freight, clearing and trucking contacts", "One coordinated transaction"],
 ];
 
@@ -19,7 +19,7 @@ const features: { title: string; text: string; visual: VisualKey; wide?: boolean
   { title: "Curated suppliers", text: "Capacity-limited panels per category, so quality is a condition of entry.", visual: "suppliers", wide: true },
   { title: "Landed cost", text: "Product, freight, insurance, duties, clearing and delivery in one estimate.", visual: "cost", wide: true },
   { title: "Compliance gate", text: "Permits and documents checked before goods leave China.", visual: "compliance" },
-  { title: "Protected payment", text: "Funds held with a licensed partner until conditions are met.", visual: "payment" },
+  { title: "Protected payment", text: "Funds are held by a payment partner until the release conditions are met.", visual: "payment" },
   { title: "Freight and customs", text: "Coordinated through vetted partners and registered clearing agents.", visual: "freight" },
   { title: "Delivery record", text: "Every order adds to a permanent supplier performance record.", visual: "record" },
 ];
@@ -74,8 +74,8 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <p className="mt-5 border-l-[3px] border-amber pl-4 text-lg">
-          Fewer suppliers, better suppliers. <span className="text-mute">Fewer steps, not fewer controls.</span>
+        <p className="mt-5 border-l-[3px] border-tomato pl-4 text-lg">
+          A limited panel of approved suppliers in each category. <span className="text-mute">Fewer steps for you, with the same compliance and payment checks.</span>
         </p>
       </section>
 
@@ -99,7 +99,7 @@ export default function Home() {
       <div className="mb-6"><Passport /></div>
 
       <section className="border-t border-line py-12 md:py-18">
-        <H2 a="Importing is fragmented." b="Nexum makes it one transaction." />
+        <H2 a="Where importing goes wrong" b="and what Nexum changes." />
         <table className="hidden w-full border-collapse text-[15px] md:table">
           <thead><tr className="text-left text-sm text-mute"><th className="p-3">Problem</th><th className="p-3">Today</th><th className="p-3">With Nexum</th></tr></thead>
           <tbody>
@@ -120,7 +120,7 @@ export default function Home() {
       </section>
 
       <section className="border-t border-line py-12 md:py-18">
-        <H2 a="Everything between supplier" b="and doorstep, in one place." />
+        <H2 a="What Nexum covers," b="from supplier check to delivery." />
         <div className="mt-7 grid gap-4 md:grid-cols-4">
           {features.map((f) => (
             <div key={f.title} className={`flex flex-col overflow-hidden rounded-lg border border-line bg-card ${f.wide ? "md:col-span-2" : ""}`}>
@@ -132,7 +132,7 @@ export default function Home() {
       </section>
 
       <section className="border-t border-line py-12 md:py-18">
-        <H2 a="Two ways to buy." b="Same infrastructure." />
+        <H2 a="Two ways to buy." b="Both use the same checks and records." />
         <div className="mt-7 grid gap-4 md:grid-cols-2">
           {[
             ["Digital Trade", "Compare specifications, see the full cost, complete compliance and pay online. For time-pressed businesses.", "/digital-trade"],
@@ -147,12 +147,12 @@ export default function Home() {
       </section>
 
       <section className="pb-12 md:pb-18">
-        <div className="rounded-xl bg-[#14213d] p-7 sm:p-10 text-[#f7f5f0] [background-image:radial-gradient(circle_at_85%_15%,rgba(20,122,67,.75),transparent_55%)] md:p-14">
-          <h2 className="text-[clamp(28px,4vw,40px)]">One transaction.<br /><span className="text-[#9aa3b5]">One record. One team to call.</span></h2>
+        <div className="rounded-xl bg-brand p-7 text-paper sm:p-10 md:p-14">
+          <h2 className="text-[clamp(28px,4vw,40px)] text-paper">Start with your list.<br /><span className="text-paper/75">We will show you suppliers and costs.</span></h2>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/start-order" className="inline-block rounded-md bg-amber px-4.5 py-2.5 font-semibold text-[#14213d]">Start order</Link>
-            <Link href="#how-it-works" className="inline-block rounded-md border border-[#f7f5f0] px-4.5 py-2.5 font-semibold">See how it works</Link>
-            <Link href="/about" className="inline-block rounded-md border border-[#f7f5f0] px-4.5 py-2.5 font-semibold">Meet the team</Link>
+            <Link href="/start-order" className="inline-block rounded-md bg-tomato px-4.5 py-2.5 font-semibold text-ink">Start order</Link>
+            <Link href="#how-it-works" className="inline-block rounded-md border border-paper px-4.5 py-2.5 font-semibold">See how it works</Link>
+            <Link href="/about" className="inline-block rounded-md border border-paper px-4.5 py-2.5 font-semibold">Meet the team</Link>
           </div>
         </div>
       </section>
