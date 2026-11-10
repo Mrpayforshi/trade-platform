@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+         import type { ReactNode } from "react";
 import { LaneShip, RouteShip } from "@/components/brand/RouteShip";
 
 const Svg = ({ label, children }: { label: string; children: ReactNode }) => (
@@ -19,7 +19,7 @@ const Row = ({ y, o, c, l }: { y: number; o: number; c: string; l: string }) => 
 
 const Check = ({ y, done, l, w }: { y: number; done: boolean; l: string; w: number }) => (
   <g>
-    <circle cx="40" cy={y + 14} r="9" fill={done ? "var(--brand)" : "none"} stroke={done ? "var(--brand)" : "var(--amber)"} strokeWidth="2" />
+    <circle cx="40" cy={y + 14} r="9" fill={done ? "var(--brand)" : "none"} stroke={done ? "var(--brand)" : "var(--tomato)"} strokeWidth="2" />
     {done && <path d={`M35 ${y + 14}l4 4 7-8`} stroke="#fff" strokeWidth="2" fill="none" />}
     <rect x="58" y={y + 9} width={w} height="10" rx="3" fill="var(--line)" />
     <text x="296" y={y + 18} textAnchor="end" fill="var(--mute)">{l}</text>
@@ -29,8 +29,8 @@ const Check = ({ y, done, l, w }: { y: number; done: boolean; l: string; w: numb
 const Suppliers = () => (
   <Svg label="Supplier panel with verification status">
     <Row y={12} o={1} c="var(--brand)" l="Verified" />
-    <Row y={56} o={1} c="var(--amber)" l="In review" />
-    <Row y={100} o={0.4} c="var(--amber)" l="Sample order" />
+    <Row y={56} o={1} c="var(--tomato)" l="In review" />
+    <Row y={100} o={0.4} c="var(--tomato)" l="Sample order" />
   </Svg>
 );
 
@@ -39,9 +39,9 @@ const Cost = () => (
     <text x="24" y="30" fill="var(--mute)">Estimated landed cost</text>
     <rect x="24" y="44" width="120" height="30" rx="4" fill="var(--ink)" />
     <rect x="146" y="44" width="50" height="30" fill="var(--brand)" />
-    <rect x="198" y="44" width="14" height="30" fill="var(--amber)" />
+    <rect x="198" y="44" width="14" height="30" fill="var(--tomato)" />
     <rect x="214" y="44" width="42" height="30" fill="var(--brick)" />
-    <rect x="258" y="44" width="38" height="30" rx="4" fill="#8c8579" />
+    <rect x="258" y="44" width="38" height="30" rx="4" fill="var(--mute)" />
     <g fill="var(--mute)"><text x="24" y="96">Product</text><text x="146" y="96">Freight</text><text x="214" y="96">Duty</text><text x="258" y="96">Other</text></g>
     <text x="24" y="126" fill="var(--ink)" fontWeight="600">Shown before you pay</text>
   </Svg>
@@ -61,7 +61,7 @@ const Payment = () => (
     <line x1="40" y1="70" x2="280" y2="70" stroke="var(--line)" strokeWidth="3" />
     <line x1="40" y1="70" x2="160" y2="70" stroke="var(--brand)" strokeWidth="3" />
     {[40, 100, 160].map((x) => <circle key={x} cx={x} cy="70" r="7" fill="var(--brand)" />)}
-    <circle cx="220" cy="70" r="7" fill="var(--card)" stroke="var(--amber)" strokeWidth="3" />
+    <circle cx="220" cy="70" r="7" fill="var(--card)" stroke="var(--tomato)" strokeWidth="3" />
     <circle cx="280" cy="70" r="7" fill="var(--card)" stroke="var(--line)" strokeWidth="3" />
     <g fill="var(--mute)" textAnchor="middle" fontSize="10">
       {["Deposit", "Production", "Inspection", "Shipment", "Delivery"].map((t, i) => <text key={t} x={40 + i * 60} y="100">{t}</text>)}
@@ -75,7 +75,7 @@ const Freight = () => (
   <Svg label="Freight route from supplier to doorstep">
     <path className="arc" d={FREIGHT_ROUTE} fill="none" stroke="var(--brand)" strokeWidth="2.5" />
     <circle cx="30" cy="105" r="7" fill="var(--ink)" />
-    <circle cx="290" cy="50" r="7" fill="var(--amber)" />
+    <circle cx="290" cy="50" r="7" fill="var(--tomato)" />
     <g fill="var(--mute)" textAnchor="middle"><text x="30" y="130">Supplier</text><text x="290" y="34">Doorstep</text></g>
     <RouteShip d={FREIGHT_ROUTE} size={30} dur={6} />
   </Svg>
@@ -85,7 +85,7 @@ const Record = () => (
   <Svg label="Supplier performance record improving">
     <text x="24" y="26" fill="var(--mute)">Supplier performance record</text>
     {[20, 32, 28, 48, 60, 76].map((h, i) => (
-      <rect key={i} x={40 + i * 42} y={130 - h} width="26" height={h} rx="3" fill={i === 5 ? "var(--amber)" : "var(--brand)"} />
+      <rect key={i} x={40 + i * 42} y={130 - h} width="26" height={h} rx="3" fill={i === 5 ? "var(--tomato)" : "var(--brand)"} />
     ))}
   </Svg>
 );
@@ -109,7 +109,7 @@ const nodes: [number, number, string][] = [
 
 const regions: Record<number, string> = { 0: "China", 4: "Zimbabwe" };
 const stopDot = (i: number) =>
-  i === 0 ? "border-ink bg-ink" : i === nodes.length - 1 ? "border-amber bg-amber" : "border-brand bg-card";
+  i === 0 ? "border-ink bg-ink" : i === nodes.length - 1 ? "border-tomato bg-tomato" : "border-brand bg-card";
 
 const CORRIDOR_ROUTE = "M90 150 Q550 -40 1010 150";
 
@@ -122,7 +122,7 @@ export function Corridor() {
         <path className="arc" d={CORRIDOR_ROUTE} fill="none" stroke="var(--brand)" strokeWidth="3" />
         {nodes.map(([x, y, t], i) => (
           <g key={t}>
-            <circle cx={x} cy={y} r={i % 4 ? 8 : 11} fill={i === 4 ? "var(--amber)" : i === 0 ? "var(--ink)" : "var(--card)"} stroke={i % 4 ? "var(--brand)" : "none"} strokeWidth="3" />
+            <circle cx={x} cy={y} r={i % 4 ? 8 : 11} fill={i === 4 ? "var(--tomato)" : i === 0 ? "var(--ink)" : "var(--card)"} stroke={i % 4 ? "var(--brand)" : "none"} strokeWidth="3" />
             <text x={x} y={y + 32} textAnchor="middle" fontSize="13" fill="var(--mute)">{t}</text>
           </g>
         ))}
