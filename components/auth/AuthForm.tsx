@@ -133,7 +133,7 @@ export function AuthForm({ mode, next, initialError = null }: Props) {
         </label>
 
         <div aria-live="polite" className="min-h-5 text-sm">
-          {error && <p className="text-brick dark:text-amber">{error}</p>}
+          {error && <p className="text-brick">{error}</p>}
           {notice && <p className="text-brand">{notice}</p>}
         </div>
 
