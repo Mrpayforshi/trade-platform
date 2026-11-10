@@ -2,15 +2,14 @@
 import { useState } from "react";
 import { stages } from "@/lib/site-content";
 
-const dot = { done: "border-brand bg-brand", now: "border-amber bg-amber", next: "border-mute" };
+const dot = { done: "border-brand bg-brand", now: "border-tomato bg-tomato", next: "border-mute" };
 
 export function Passport() {
   const [open, setOpen] = useState(2);
   return (
     <div className="overflow-hidden rounded-lg border border-line bg-card">
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-line px-4 py-3 text-[13px] text-mute">
-        <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className="flex gap-1.5">{[0, 1, 2].map((k) => <i key={k} className="size-2.5 rounded-full bg-line" />)}</span>
+        <span>
           <b className="text-ink">Transaction passport</b> — sample order
         </span>
         <span>Illustrative</span>
